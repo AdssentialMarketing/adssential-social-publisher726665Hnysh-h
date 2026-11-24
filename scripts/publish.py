@@ -49,6 +49,39 @@ def check_image(url):
         raise RuntimeError(f"image is served as '{ctype}', Instagram needs image/jpeg: {url}")
     return size
 
+SGT = __import__("datetime").timezone(__import__("datetime").timedelta(hours=8))
+
+def sg_holidays(schedule, year):
+    """Singapore public holidays for a year: live list first, the schedule's stored list as fallback."""
+    hol = {d: n for d, n in schedule.get("public_holidays_sg", {}).items() if d.startswith(str(year))}
+    try:
+        req = urllib.request.Request(f"https://date.nager.at/api/v3/PublicHolidays/{year}/SG", headers={"User-Agent": "adssential-publisher"})
+        with urllib.request.urlopen(req, timeout=30) as r:
+            for h in json.loads(r.read().decode()):
+                hol[h["date"]] = h.get("localName") or h.get("name")
+        src = "live"
+    except Exception:
+        src = "stored list"
+    return hol, src
+
+def posting_day_check(schedule, day):
+    """Return (ok, reason, next_working_day). Posts go out Monday to Friday, never on SG public holidays."""
+    import datetime as dt
+    def blocked(d):
+        hol, _ = sg_holidays(schedule, d.year)
+        if d.weekday() >= 5:
+            return d.strftime("%A")
+        if d.isoformat() in hol:
+            return f"public holiday ({hol[d.isoformat()]})"
+        return None
+    why = blocked(day)
+    nxt = day
+    if why:
+        nxt = day + dt.timedelta(days=1)
+        while blocked(nxt):
+            nxt += dt.timedelta(days=1)
+    return (why is None), why, nxt.isoformat()
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--schedule", required=True)
@@ -56,6 +89,8 @@ def main():
     ap.add_argument("--image-base", required=True, help="public base URL the image path is appended to")
     ap.add_argument("--only", choices=["facebook", "instagram"])
     ap.add_argument("--dry-run", action="store_true")
+    ap.add_argument("--date", help="check this date (YYYY-MM-DD) instead of today in Singapore; for testing the day rules")
+    ap.add_argument("--ignore-day-rules", action="store_true", help="post even on a weekend or public holiday (only when the user asks)")
     a = ap.parse_args()
 
     s = json.load(open(a.schedule, encoding="utf-8"))
@@ -66,6 +101,17 @@ def main():
     page, ig = s["facebook_page_id"], s["instagram_user_id"]
     img = a.image_base.rstrip("/") + "/" + it["image"]
     out = {"item": it["n"], "id": it["id"], "image": img, "dry_run": a.dry_run}
+
+    import datetime as dt
+    day = dt.date.fromisoformat(a.date) if a.date else dt.datetime.now(SGT).date()
+    ok_day, why, nxt = posting_day_check(s, day)
+    out["day_check"] = {"date": day.isoformat(), "weekday": day.strftime("%A"), "ok": ok_day, "reason": why, "next_working_day": nxt}
+    if not ok_day and not a.ignore_day_rules:
+        out["ok"] = False
+        out["skipped"] = True
+        out["message"] = f"Not posted: {day.isoformat()} is a {why}. Next working day: {nxt}."
+        print(json.dumps(out, ensure_ascii=False, indent=2))
+        sys.exit(3)
 
     size = check_image(img)
     me = call("GET", f"{G}/me", {"fields": "id,name"})

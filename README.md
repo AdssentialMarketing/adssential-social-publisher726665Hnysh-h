@@ -12,6 +12,7 @@ Paid lead-generation creatives (Lead Leak Check, service offers, retargeting) ar
 | `schedule/organic.json` | One entry per post: publish time (Singapore time), image path, Facebook caption, Instagram caption |
 | `scripts/publish.py` | Publishes one schedule item to Facebook and Instagram via the Meta Graph API. `--dry-run` checks without posting |
 | `docs/SETUP.md` | How to set the whole thing up again from scratch (Meta app, tokens, hosting, scheduling) |
+| `calendar/organic-posts.ics` | The schedule as a calendar file: import into Google Calendar, Outlook or Apple Calendar |
 
 No tokens, passwords or keys are ever stored in this repository.
 
@@ -25,13 +26,19 @@ No tokens, passwords or keys are ever stored in this repository.
    ```
 3. The script posts the photo to the Page, then creates and publishes the Instagram post, and prints the links of both. If one fails it reports which, so it can be retried with `--only facebook` or `--only instagram`.
 
+## Posting rules
+
+- **Monday to Friday only.** Never on a Saturday or Sunday.
+- **Never on a Singapore public holiday.** The script checks the live holiday list (date.nager.at) on the day, with the list stored in `schedule/organic.json` as a fallback.
+- On a blocked day the script posts nothing, exits with code 3, and reports the reason and the next working day.
+
 ## Current organic schedule
 
-Every ~1.5 weeks, alternating Thursday 12:30 PM and Monday 8:30 PM (SGT). See `schedule/organic.json`.
+Every ~1.5 weeks, alternating Thursday 12:30 PM and Monday 8:30 PM (SGT). All dates are checked against the 2026–2027 Singapore public holidays. See `schedule/organic.json`.
 
 | # | When | Post |
 |---|---|---|
-| 1 | Thu 26 Nov 2026, 12:30 PM | Portfolio: GWS Living Art |
+| 1 | ~~Thu 26 Nov 2026~~ posted early, Tue 24 Nov 2026 | Portfolio: GWS Living Art ✅ |
 | 2 | Mon 7 Dec 2026, 8:30 PM | Guide: GEO audit checklist |
 | 3 | Thu 17 Dec 2026, 12:30 PM | Guide: How long to build a website |
 | 4 | Mon 28 Dec 2026, 8:30 PM | Portfolio: Mindwaves Hypnotherapy |

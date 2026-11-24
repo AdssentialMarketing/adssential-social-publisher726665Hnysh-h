@@ -15,7 +15,13 @@
       "image": "assets/organic/2026-11/adssential-social-01-gws.jpg",
       "facebook_caption": "Green walls deserve a website that grows too. 🌿\n\nGWS Living Art designs green roofs, green walls and urban farms across Singapore.\n\nWe revamped their website and strengthened on-page and off-page SEO, so the site matches what buyers actually search for. Keyword rankings improved by up to 80%.\n\nPlanning a new website or revamp? WhatsApp us at +65 9157 8336 or visit adssentialmarketing.com.\n\n#WebDesignSingapore #SEOSingapore #ClientSuccess #AdssentialMarketing #GreenBuilding",
       "instagram_caption": "Green walls deserve a website that grows too. 🌿\n\nGWS Living Art designs green roofs, green walls and urban farms across Singapore.\n\nWe revamped their website and strengthened on-page and off-page SEO, so the site matches what buyers actually search for. Keyword rankings improved by up to 80%.\n\nPlanning a new website or revamp? WhatsApp us at +65 9157 8336 or visit adssentialmarketing.com.\n\n#WebDesignSingapore #SEOSingapore #ClientSuccess #AdssentialMarketing #GreenBuilding",
-      "status": "scheduled"
+      "status": "published",
+      "published": {
+        "at": "2026-11-24T15:43:04+08:00",
+        "note": "published early as the live test",
+        "facebook": "https://www.facebook.com/1779762677482617/posts/1779763010815917",
+        "instagram": "https://www.instagram.com/p/DgHcfQjF5FV/"
+      }
     },
     {
       "n": 2,
@@ -105,5 +111,35 @@
       "instagram_caption": "WordPress, Shopify, Wix, Webflow or Squarespace? 🖥️\n\nFor most Singapore service businesses, self-hosted WordPress is the most flexible long-term choice. Shopify suits product-led online shops, Wix and Squarespace suit owners who want to build it themselves, and Webflow suits design-led sites with a capable team.\n\n📖 Full comparison: adssentialmarketing.com/blog (link in bio)\n\n#WebDesignSingapore #WordPress #Shopify",
       "status": "scheduled"
     }
-  ]
+  ],
+  "posting_rules": {
+    "days": "Monday to Friday only",
+    "skip_public_holidays": "Singapore",
+    "on_blocked_day": "do not post; report SKIPPED with the reason and the next working day",
+    "holiday_source": "https://date.nager.at/api/v3/PublicHolidays/<year>/SG (live), with the list below as a fallback"
+  },
+  "public_holidays_sg": {
+    "2026-01-01": "New Year's Day",
+    "2026-02-17": "Chinese New Year",
+    "2026-02-18": "Chinese New Year",
+    "2026-03-21": "Hari Raya Puasa",
+    "2026-04-03": "Good Friday",
+    "2026-05-01": "Labour Day",
+    "2026-05-27": "Hari Raya Haji",
+    "2026-06-01": "Vesak Day",
+    "2026-08-10": "National Day",
+    "2026-11-09": "Deepavali",
+    "2026-12-25": "Christmas Day",
+    "2027-01-01": "New Year's Day",
+    "2027-02-06": "Chinese New Year",
+    "2027-02-08": "Chinese New Year",
+    "2027-03-10": "Hari Raya Puasa",
+    "2027-03-26": "Good Friday",
+    "2027-05-01": "Labour Day",
+    "2027-05-17": "Hari Raya Haji",
+    "2027-05-20": "Vesak Day",
+    "2027-08-09": "National Day",
+    "2027-10-28": "Deepavali",
+    "2027-12-25": "Christmas Day"
+  }
 }
